@@ -2,11 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./database.js');
 const app = express();
-const port = 3000;
+const port = 3674;
 
 app.use(bodyParser.json());
 
-app.get('/users', (req, res) => {
+// Route for the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the Simple Web App!');
+});
+
+app.post('/users', (req, res) => {
   let sql = `SELECT * FROM users WHERE email = '${req.query.email}'`;
   db.all(sql, [], (err, rows) => {
     if (err) {
@@ -15,8 +20,4 @@ app.get('/users', (req, res) => {
     }
     res.json(rows);
   });
-});
-
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`);
 });
